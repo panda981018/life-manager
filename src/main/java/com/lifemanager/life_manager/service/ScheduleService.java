@@ -6,6 +6,8 @@ import com.lifemanager.life_manager.dto.schedule.ScheduleRequest;
 import com.lifemanager.life_manager.dto.schedule.ScheduleResponse;
 import com.lifemanager.life_manager.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,11 +45,8 @@ public class ScheduleService {
     }
 
     // UserId에 맞는 스케줄 리스트 전체 가져오기
-    public List<ScheduleResponse> getSchedulesByUser(Long userId) {
-        return scheduleRepository.findByUserIdOrderByStartDatetimeAsc(userId)
-                .stream()
-                .map(ScheduleResponse::from)
-                .collect(Collectors.toList());
+    public Page<Schedule> getAllSchedules(Long userId, Pageable pageable) {
+        return scheduleRepository.findByUserId(userId, pageable);
     }
 
     // UserId에 맞으면서 날짜 범위에 해당하는 스케줄을 조회

@@ -1,11 +1,16 @@
 package com.lifemanager.life_manager.contorller;
 
 import com.lifemanager.life_manager.config.CurrentUserId;
+import com.lifemanager.life_manager.domain.Schedule;
 import com.lifemanager.life_manager.dto.schedule.ScheduleRequest;
 import com.lifemanager.life_manager.dto.schedule.ScheduleResponse;
 import com.lifemanager.life_manager.service.ScheduleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,10 +38,23 @@ public class ScheduleController {
 
     // 사용자의 모든 일정 조회
     @GetMapping
-    public ResponseEntity<List<ScheduleResponse>> getSchedules(
-            @CurrentUserId Long userId) {
-        List<ScheduleResponse> schedules = scheduleService.getSchedulesByUser(userId);
-        return ResponseEntity.ok(schedules);
+    public ResponseEntity<Page<ScheduleResponse>> getAllSchedules(
+            @RequestHeader("X-User-Id") Long userId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "startDatetime") String sortBy,
+            @RequestParam(defaultValue = "desc") String sortDirection
+    ) {
+        Sort.Direction direction = sortDirection.equalsIgnoreCase("asc")
+                ? Sort.Direction.ASC
+                : Sort.Direction.DESC;
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
+
+        Page<Schedule> schedules = scheduleService.getAllSchedules(userId, pageable);
+        Page<ScheduleResponse> response = schedules.map(ScheduleResponse::from);
+
+        return ResponseEntity.ok(response);
     }
 
     // 기간별 일정 조회

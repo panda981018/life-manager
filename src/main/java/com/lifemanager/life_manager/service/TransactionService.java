@@ -8,6 +8,8 @@ import com.lifemanager.life_manager.dto.transaction.TransactionResponse;
 import com.lifemanager.life_manager.dto.transaction.TransactionSummary;
 import com.lifemanager.life_manager.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,11 +46,15 @@ public class TransactionService {
     }
 
     // 기간 내 수입/지출 기록 조회
-    public List<TransactionResponse> getTransactionsByDateRange(Long userId, LocalDate startDate, LocalDate endDate) {
-        return transactionRepository.findByUserIdAndTransactionDateBetween(userId, startDate, endDate)
-                .stream()
-                .map(TransactionResponse::from)
-                .collect(Collectors.toList());
+    public Page<Transaction> getTransactionsByDateRange(
+            Long userId,
+            LocalDate startDate,
+            LocalDate endDate,
+            Pageable pageable
+    ) {
+        return transactionRepository.findByUserIdAndTransactionDateBetween(
+                userId, startDate, endDate, pageable
+        );
     }
 
     // 수입/지출 통계

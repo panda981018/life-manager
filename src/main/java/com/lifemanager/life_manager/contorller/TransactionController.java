@@ -1,12 +1,17 @@
 package com.lifemanager.life_manager.contorller;
 
 import com.lifemanager.life_manager.config.CurrentUserId;
+import com.lifemanager.life_manager.domain.Transaction;
 import com.lifemanager.life_manager.dto.transaction.TransactionRequest;
 import com.lifemanager.life_manager.dto.transaction.TransactionResponse;
 import com.lifemanager.life_manager.dto.transaction.TransactionSummary;
 import com.lifemanager.life_manager.service.TransactionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,11 +38,29 @@ public class TransactionController {
 
     // 기간별 거래 내역 조회
     @GetMapping
-    public ResponseEntity<List<TransactionResponse>> getTransactions(
-            @CurrentUserId Long userId,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
-        List<TransactionResponse> response = transactionService.getTransactionsByDateRange(userId, startDate, endDate);
+    public ResponseEntity<Page<TransactionResponse>> getTransactionsByDateRange(
+            @RequestHeader("X-User-Id") Long userId,
+            @RequestParam String startDate,
+            @RequestParam String endDate,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "transactionDate") String sortBy,
+            @RequestParam(defaultValue = "desc") String sortDirection
+    ) {
+        LocalDate start = LocalDate.parse(startDate);
+        LocalDate end = LocalDate.parse(endDate);
+
+        Sort.Direction direction = sortDirection.equalsIgnoreCase("asc")
+                ? Sort.Direction.ASC
+                : Sort.Direction.DESC;
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
+
+        Page<Transaction> transactions = transactionService.getTransactionsByDateRange(
+                userId, start, end, pageable
+        );
+        Page<TransactionResponse> response = transactions.map(TransactionResponse::from);
+
         return ResponseEntity.ok(response);
     }
 
