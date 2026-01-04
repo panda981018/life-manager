@@ -1,5 +1,6 @@
 package com.lifemanager.life_manager.contorller;
 
+import com.lifemanager.life_manager.config.CurrentUserId;
 import com.lifemanager.life_manager.dto.user.PasswordChangeRequest;
 import com.lifemanager.life_manager.dto.user.UserResponse;
 import com.lifemanager.life_manager.dto.user.UserUpdateRequest;
@@ -16,16 +17,16 @@ public class UserController {
     private final UserService userService;
 
     // 사용자 정보 조회
-    @GetMapping("/{userId}")
-    public ResponseEntity<UserResponse> getUser(@PathVariable Long userId) {
+    @GetMapping("/me")
+    public ResponseEntity<UserResponse> getUser(@CurrentUserId Long userId) {
         UserResponse user = userService.getUserById(userId);
         return ResponseEntity.ok(user);
     }
 
     // 사용자 정보 수정 (이름)
-    @PutMapping("/{userId}")
+    @PutMapping("/me")
     public ResponseEntity<UserResponse> updateUser(
-            @PathVariable Long userId,
+            @CurrentUserId Long userId,
             @RequestBody UserUpdateRequest request
     ) {
         UserResponse updatedUser = userService.updateUser(userId, request);
@@ -33,9 +34,9 @@ public class UserController {
     }
 
     // 비밀번호 변경
-    @PutMapping("/{userId}/password")
+    @PutMapping("/me/password")
     public ResponseEntity<String> changePassword(
-            @PathVariable Long userId,
+            @CurrentUserId Long userId,
             @RequestBody PasswordChangeRequest request
     ) {
         userService.changePassword(userId, request);
