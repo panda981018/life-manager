@@ -11,7 +11,9 @@
 
 Life Manager는 개인의 일정과 금전 관리를 하나의 플랫폼에서 통합 관리할 수 있는 웹 애플리케이션입니다.
 이 저장소는 Spring Boot 기반의 RESTful API 서버를 포함하고 있습니다.
+
 [//]: # (**🌐 배포 URL**: https://life-manager.duckdns.org)
+
 ---
 
 ## ✨ 주요 기능
