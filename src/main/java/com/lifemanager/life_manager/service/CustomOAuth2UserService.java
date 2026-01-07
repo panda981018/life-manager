@@ -67,6 +67,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                     .email(email)
                     .password(passwordEncoder.encode(UUID.randomUUID().toString()))
                     .name(oAuth2UserInfo.getName())
+                    .provider(oAuth2UserInfo.getProvider())
+                    .providerId(oAuth2UserInfo.getProviderId())
                     .build();
             log.info("새로운 OAuth2 사용자 등록 - provider: {}, email: {}",
                     oAuth2UserInfo.getProvider(), oAuth2UserInfo.getEmail());
