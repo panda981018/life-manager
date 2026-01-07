@@ -39,7 +39,7 @@ public class TransactionController {
     // 기간별 거래 내역 조회
     @GetMapping
     public ResponseEntity<Page<TransactionResponse>> getTransactionsByDateRange(
-            @RequestHeader("X-User-Id") Long userId,
+            @CurrentUserId Long userId,
             @RequestParam String startDate,
             @RequestParam String endDate,
             @RequestParam(defaultValue = "0") int page,

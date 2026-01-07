@@ -39,7 +39,7 @@ public class ScheduleController {
     // 사용자의 모든 일정 조회
     @GetMapping
     public ResponseEntity<Page<ScheduleResponse>> getAllSchedules(
-            @RequestHeader("X-User-Id") Long userId,
+            @CurrentUserId Long userId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "startDatetime") String sortBy,
