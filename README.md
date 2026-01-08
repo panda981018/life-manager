@@ -1,267 +1,298 @@
+# Life Manager 🗓️💰
 
-# 🗓️ Life Manager - Backend
+스마트한 일상 관리를 위한 통합 스케줄링 및 지출 추적 애플리케이션
 
-> 일정과 가계부를 한 번에 관리하는 통합 라이프 매니저 백엔드 API
+## 📋 프로젝트 소개
 
-[![Java](https://img.shields.io/badge/Java-17-007396?style=flat-square&logo=java)](https://www.oracle.com/java/)
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.0-6DB33F?style=flat-square&logo=spring)](https://spring.io/projects/spring-boot)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-336791?style=flat-square&logo=postgresql)](https://www.postgresql.org/)
+Life Manager는 개인의 일정과 재정을 한 곳에서 효율적으로 관리할 수 있는 풀스택 웹 애플리케이션입니다.
+직관적인 UI와 강력한 기능으로 일상의 생산성을 높이고, 재정 관리를 쉽게 할 수 있도록 도와줍니다.
 
-## 📌 프로젝트 소개
+### 🌟 주요 기능
 
-Life Manager는 개인의 일정과 금전 관리를 하나의 플랫폼에서 통합 관리할 수 있는 웹 애플리케이션입니다.
-이 저장소는 Spring Boot 기반의 RESTful API 서버를 포함하고 있습니다.
+#### 📅 일정 관리
+- 일정 생성, 조회, 수정, 삭제 (CRUD)
+- 시작/종료 시간 기반 일정 관리
+- 페이지네이션 및 정렬 지원
+- 대시보드에서 다가오는 일정 요약 확인
 
-**🌐 배포 URL**: https://life-manager.duckdns.org
+#### 💳 지출 관리
+- 수입/지출 거래 기록 및 추적
+- 날짜 범위별 거래 조회
+- 수입/지출 요약 통계
+- 카테고리별 거래 분류
 
----
+#### 🔐 인증 및 보안
+- JWT 기반 토큰 인증
+- OAuth2 소셜 로그인 지원
+    - Google 로그인
+    - Kakao 로그인
+    - Naver 로그인
+- 비밀번호 암호화 (BCrypt)
+- CORS 설정으로 안전한 API 통신
 
-## ✨ 주요 기능
+#### 📊 대시보드
+- 실시간 요약 정보
+    - 이번 달 수입/지출 통계
+    - 다가오는 일정 미리보기
+    - 최근 거래 내역
+- 직관적인 데이터 시각화
 
-### 👤 사용자 관리
-- 회원가입 / 로그인 (JWT 기반 인증)
-- 프로필 관리 (이름 변경)
-- 비밀번호 변경
+## 🛠 기술 스택
 
-### 📅 일정 관리
-- 일정 CRUD (생성, 조회, 수정, 삭제)
-- 페이지네이션 & 정렬
-- 색상 태그 & 카테고리
-- 종일 일정 지원
+### Backend
+- **Framework**: Spring Boot 3.3.5
+- **Language**: Java 17
+- **Database**: PostgreSQL
+- **ORM**: Spring Data JPA (Hibernate)
+- **Security**: Spring Security + JWT
+- **OAuth2**: Spring Security OAuth2 Client
+- **Build Tool**: Gradle
+- **Deployment**: AWS EC2 (Ubuntu)
 
-### 💰 가계부 관리
-- 수입/지출 기록 관리
-- 기간별 조회 & 요약
-- 페이지네이션 & 정렬
-- 카테고리별 분류
+### Frontend
+- **Framework**: React 18
+- **Styling**: Tailwind CSS
+- **Routing**: React Router DOM
+- **HTTP Client**: Axios
+- **Deployment**: Vercel
 
----
+### Infrastructure
+- **Database**: AWS RDS (PostgreSQL)
+- **Backend Server**: AWS EC2
+- **Frontend Hosting**: Vercel
+- **Domain**: DuckDNS
+- **Reverse Proxy**: Nginx
+- **SSL**: Let's Encrypt
+- **CI/CD**: GitHub Actions
 
-## 🛠️ 기술 스택
-
-### Core
-- **Java 17** - 프로그래밍 언어
-- **Spring Boot 3.5.0** - 백엔드 프레임워크
-- **Spring Security** - 인증 & 보안
-- **Spring Data JPA** - ORM
-
-### Database
-- **PostgreSQL 15** - 메인 데이터베이스
-- **AWS RDS** - 클라우드 데이터베이스
-
-### Security
-- **JWT (JSON Web Token)** - 토큰 기반 인증
-- **BCrypt** - 비밀번호 암호화
-
-### Deployment
-- **AWS EC2** - 서버 호스팅
-- **Nginx** - 리버스 프록시
-- **Let's Encrypt** - SSL/TLS 인증서
-- **DuckDNS** - 동적 DNS
-- **GitHub Actions** - CI/CD
-
----
-
-## 📁 프로젝트 구조
+## 📐 시스템 아키텍처
 ```
-src/main/java/com/lifemanager/life_manager/
-├── config/              # 설정 파일
-│   ├── CurrentUserId.java
-│   ├── JwtAuthenticationFilter.java
-│   ├── SecurityConfig.java
-│   └── UserIdArgumentResolver.java
-├── controller/          # REST API 컨트롤러
-│   ├── AuthController.java
-│   ├── ScheduleController.java
-│   ├── TransactionController.java
-│   └── UserController.java
-├── domain/             # 엔티티
-│   ├── User.java
-│   ├── Schedule.java
-│   └── Transaction.java
-├── dto/                # 데이터 전송 객체
-│   ├── auth/
-│   ├── schedule/
-│   ├── transaction/
-│   └── user/
-├── repository/         # JPA 레포지토리
-│   ├── UserRepository.java
-│   ├── ScheduleRepository.java
-│   └── TransactionRepository.java
-├── service/            # 비즈니스 로직
-│   ├── AuthService.java
-│   ├── ScheduleService.java
-│   ├── TransactionService.java
-│   └── UserService.java
-└── util/              # 유틸리티
-    └── JwtUtil.java
+┌─────────────┐         ┌──────────────┐         ┌─────────────┐
+│   Vercel    │         │   AWS EC2    │         │   AWS RDS   │
+│  (Frontend) │◄───────►│  (Backend)   │◄───────►│ (PostgreSQL)│
+│   React     │  HTTPS  │ Spring Boot  │  JDBC   │             │
+└─────────────┘         └──────────────┘         └─────────────┘
+                               │
+                               │ OAuth2
+                               ▼
+                    ┌──────────────────────┐
+                    │ OAuth2 Providers     │
+                    │ - Google             │
+                    │ - Kakao              │
+                    │ - Naver              │
+                    └──────────────────────┘
 ```
-
----
 
 ## 🚀 시작하기
 
 ### 필수 요구사항
+
 - Java 17 이상
-- PostgreSQL 15 이상
-- Gradle 8.0 이상
+- PostgreSQL 12 이상
+- Gradle 7.0 이상
+- Node.js 16 이상 (프론트엔드)
 
 ### 환경 변수 설정
 
-`application.properties` 또는 환경 변수에 다음을 설정:
+`application-prod.properties` 또는 시스템 환경 변수에 다음 설정 필요:
 ```properties
 # Database
-spring.datasource.url=jdbc:postgresql://localhost:5432/life_manager
-spring.datasource.username=your_username
-spring.datasource.password=your_password
+DB_URL=jdbc:postgresql://localhost:5432/life_manager
+DB_USERNAME=your_username
+DB_PASSWORD=your_password
 
 # JWT
-jwt.secret=your-secret-key-here
-jwt.expiration=86400000
+JWT_SECRET=your-secret-key-min-256-bits
+
+# CORS
+CORS_ALLOWED_ORIGINS=http://localhost:3000
+
+# OAuth2 - Google
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+
+# OAuth2 - Kakao
+KAKAO_CLIENT_ID=your-kakao-rest-api-key
+KAKAO_CLIENT_SECRET=your-kakao-client-secret
+
+# OAuth2 - Naver
+NAVER_CLIENT_ID=your-naver-client-id
+NAVER_CLIENT_SECRET=your-naver-client-secret
+
+# OAuth2 Redirect
+OAUTH2_REDIRECT_URI=http://localhost:3000/api/oauth2/redirect
+```
+
+### 데이터베이스 설정
+```sql
+-- PostgreSQL 데이터베이스 생성
+CREATE DATABASE life_manager;
+
+-- 테이블은 애플리케이션 실행 시 자동 생성됨 (JPA)
 ```
 
 ### 로컬 실행
 ```bash
 # 1. 저장소 클론
-git clone https://github.com/panda981018/life-manager.git
+git clone https://github.com/your-username/life-manager.git
 cd life-manager
 
-# 2. 빌드
+# 2. 환경 변수 설정 (.env 또는 시스템 환경 변수)
+
+# 3. 빌드
 ./gradlew clean build
 
-# 3. 실행
+# 4. 실행
 ./gradlew bootRun
+
+# 애플리케이션이 http://localhost:9000 에서 실행됩니다
 ```
 
-서버는 `http://localhost:9000`에서 실행됩니다.
-
----
-
-## 📡 API 엔드포인트
-
-### 🔐 인증
-| Method | Endpoint | 설명 |
-|--------|----------|------|
-| POST | `/api/auth/signup` | 회원가입 |
-| POST | `/api/auth/login` | 로그인 |
-
-### 👤 사용자
-| Method | Endpoint | 설명 |
-|--------|----------|------|
-| GET | `/api/users/me` | 내 정보 조회 |
-| PUT | `/api/users/me` | 이름 변경 |
-| PUT | `/api/users/me/password` | 비밀번호 변경 |
-
-### 📅 일정
-| Method | Endpoint | 설명 |
-|--------|----------|------|
-| GET | `/api/schedules` | 일정 목록 조회 (페이지네이션) |
-| POST | `/api/schedules` | 일정 생성 |
-| PUT | `/api/schedules/{id}` | 일정 수정 |
-| DELETE | `/api/schedules/{id}` | 일정 삭제 |
-
-### 💰 거래
-| Method | Endpoint | 설명 |
-|--------|----------|------|
-| GET | `/api/transactions` | 거래 목록 조회 (페이지네이션) |
-| GET | `/api/transactions/summary` | 기간별 수입/지출 요약 |
-| POST | `/api/transactions` | 거래 생성 |
-| DELETE | `/api/transactions/{id}` | 거래 삭제 |
-
----
-
-## 🔒 보안
-
-- **JWT 인증**: 모든 API는 JWT 토큰 기반 인증 사용
-- **비밀번호 암호화**: BCrypt 알고리즘 사용
-- **CORS 설정**: 허용된 오리진만 접근 가능
-- **@CurrentUserId**: 커스텀 어노테이션으로 안전한 사용자 식별
-
----
-
-## 📊 데이터베이스 스키마
-
-### Users (사용자)
-```sql
-CREATE TABLE users (
-    id BIGSERIAL PRIMARY KEY,
-    email VARCHAR(255) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    name VARCHAR(255) NOT NULL
-);
-```
-
-### Schedules (일정)
-```sql
-CREATE TABLE schedules (
-    id BIGSERIAL PRIMARY KEY,
-    user_id BIGINT NOT NULL,
-    title VARCHAR(255) NOT NULL,
-    description TEXT,
-    start_datetime TIMESTAMP NOT NULL,
-    end_datetime TIMESTAMP NOT NULL,
-    is_all_day BOOLEAN DEFAULT FALSE,
-    category VARCHAR(100),
-    color VARCHAR(7),
-    FOREIGN KEY (user_id) REFERENCES users(id)
-);
-```
-
-### Transactions (거래)
-```sql
-CREATE TABLE transactions (
-    id BIGSERIAL PRIMARY KEY,
-    user_id BIGINT NOT NULL,
-    type VARCHAR(20) NOT NULL,
-    amount DECIMAL(15,2) NOT NULL,
-    category VARCHAR(100),
-    description TEXT,
-    transaction_date DATE NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users(id)
-);
-```
-
----
-
-## 🚢 배포
-
-### AWS EC2 배포
+### 프로덕션 빌드
 ```bash
-# 1. JAR 파일 빌드
+# JAR 파일 생성
 ./gradlew clean build -x test
 
-# 2. EC2에 업로드
-scp build/libs/*.jar ec2-user@your-server:/home/ec2-user/
-
-# 3. EC2에서 실행
-java -jar life-manager-0.0.1-SNAPSHOT.jar
+# 생성된 파일: build/libs/life-manager-*.jar
 ```
 
-### GitHub Actions CI/CD
-`.github/workflows/deploy.yml` 참고
+## 🔑 OAuth2 소셜 로그인 설정
 
----
+### Google Cloud Console
+
+1. [Google Cloud Console](https://console.cloud.google.com/) 접속
+2. 프로젝트 생성 → API 및 서비스 → 사용자 인증 정보
+3. OAuth 2.0 클라이언트 ID 생성
+4. **승인된 리디렉션 URI** 추가:
+    - `http://localhost:9000/api/login/oauth2/code/google` (로컬)
+    - `https://your-domain.com/api/login/oauth2/code/google` (운영)
+5. Client ID와 Client Secret 저장
+
+### Kakao Developers
+
+1. [Kakao Developers](https://developers.kakao.com/) 접속
+2. 내 애플리케이션 → 앱 생성
+3. 플랫폼 → Web → Redirect URI 설정:
+    - `http://localhost:9000/api/login/oauth2/code/kakao` (로컬)
+    - `https://your-domain.com/api/login/oauth2/code/kakao` (운영)
+4. 카카오 로그인 → 활성화 설정
+5. 동의 항목 → 닉네임, 이메일 필수 동의 설정
+6. REST API 키와 Client Secret 저장
+
+### Naver Developers
+
+1. [Naver Developers](https://developers.naver.com/) 접속
+2. 애플리케이션 등록
+3. API 설정 → Callback URL:
+    - `http://localhost:9000/api/login/oauth2/code/naver` (로컬)
+    - `https://your-domain.com/api/login/oauth2/code/naver` (운영)
+4. 사용 API → 회원 이름, 이메일 체크
+5. Client ID와 Client Secret 저장
+
+## 📚 API 문서
+
+### 인증 API
+
+| Method | Endpoint                               | Description |
+|--------|----------------------------------------|-------------|
+| POST | `/api/auth/signup`                     | 회원가입 |
+| POST | `/api/auth/login`                      | 로그인 |
+| GET | `/api/oauth2/authorization/{provider}` | 소셜 로그인 시작 |
+
+### 일정 API
+
+| Method | Endpoint | Description | Auth |
+|--------|----------|-------------|------|
+| GET | `/api/schedules` | 일정 목록 조회 | Required |
+| POST | `/api/schedules` | 일정 생성 | Required |
+| PUT | `/api/schedules/{id}` | 일정 수정 | Required |
+| DELETE | `/api/schedules/{id}` | 일정 삭제 | Required |
+
+### 거래 API
+
+| Method | Endpoint | Description | Auth |
+|--------|----------|-------------|------|
+| GET | `/api/transactions` | 거래 목록 조회 | Required |
+| GET | `/api/transactions/summary` | 거래 요약 통계 | Required |
+| POST | `/api/transactions` | 거래 생성 | Required |
+| DELETE | `/api/transactions/{id}` | 거래 삭제 | Required |
+
+### 사용자 API
+
+| Method | Endpoint | Description | Auth |
+|--------|----------|-------------|------|
+| GET | `/api/users/me` | 내 정보 조회 | Required |
+| PUT | `/api/users/me` | 내 정보 수정 | Required |
+| PUT | `/api/users/me/password` | 비밀번호 변경 | Required |
+
+## 🔐 보안
+
+- **JWT 토큰**: 모든 API 요청에 `Authorization: Bearer {token}` 헤더 필요
+- **비밀번호 암호화**: BCrypt 알고리즘 사용
+- **CORS 설정**: 허용된 오리진만 접근 가능
+- **환경 변수**: 민감한 정보는 환경 변수로 관리
+- **HTTPS**: 프로덕션 환경에서 SSL 인증서 적용
+
+## 🌐 배포
+
+### 백엔드 (AWS EC2)
+```bash
+# systemd 서비스 설정
+sudo vi /etc/systemd/system/life-manager.service
+
+# 서비스 시작
+sudo systemctl start life-manager
+sudo systemctl enable life-manager
+
+# Nginx 리버스 프록시 설정
+sudo vi /etc/nginx/sites-available/life-manager
+```
+
+### 프론트엔드 (Vercel)
+
+- GitHub 저장소와 연동
+- 환경 변수 설정
+- 자동 배포 활성화
+
+## 📝 프로젝트 구조
+```
+src/
+├── main/
+│   ├── java/com/lifemanager/life_manager/
+│   │   ├── config/          # 설정 (Security, CORS, JWT, OAuth2)
+│   │   ├── controller/      # REST API 컨트롤러
+│   │   ├── domain/          # JPA 엔티티
+│   │   ├── dto/             # 데이터 전송 객체
+│   │   ├── repository/      # JPA 레포지토리
+│   │   ├── security/        # JWT, OAuth2 관련
+│   │   ├── service/         # 비즈니스 로직
+│   │   └── resolver/        # 커스텀 어노테이션 리졸버
+│   └── resources/
+│       └── application.properties  # 설정 파일
+└── test/                    # 테스트 코드
+```
 
 ## 🤝 기여
 
-이 프로젝트는 개인 포트폴리오 프로젝트입니다.
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
----
+## 📄 라이선스
 
-## 📝 라이선스
-
-이 프로젝트는 개인 학습 목적으로 만들어졌습니다.
-
----
+이 프로젝트는 MIT 라이선스를 따릅니다.
 
 ## 👨‍💻 개발자
 
-**panda981018** - [GitHub](https://github.com/panda981018)
+**Jiwon**
+- GitHub: [@your-username](https://github.com/your-username)
+
+## 📞 문의
+
+프로젝트에 대한 질문이나 제안사항이 있으시면 이슈를 등록해주세요.
 
 ---
 
-## 🔗 관련 링크
-
-- [프론트엔드 저장소](https://github.com/panda981018/life-manager-frontend)
-- [라이브 데모](https://life-manager-frontend-ruddy.vercel.app)
-- [API 문서](https://life-manager.duckdns.org/swagger-ui.html) (준비 중)
+⭐ 이 프로젝트가 도움이 되셨다면 Star를 눌러주세요!
