@@ -287,7 +287,7 @@ src/
 ## 👨‍💻 개발자
 
 **Jiwon**
-- GitHub: [@your-username](https://github.com/your-username)
+- GitHub: [@panda981018](https://github.com/your-username)
 
 ## 📞 문의
 
