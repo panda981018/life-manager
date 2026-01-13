@@ -51,7 +51,7 @@ Desktop.ini
 # 로컬 및 프로덕션 설정 파일은 Git에 올리지 않음
 application-local.properties
 application-prod.properties
-application-*.properties
+#application-*.properties
 # application.properties는 공개 가능한 기본 설정만 있으므로 커밋 허용
 !application.properties
 
