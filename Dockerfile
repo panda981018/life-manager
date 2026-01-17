@@ -1,4 +1,4 @@
-FROM openjdk:17-jdk-slim
+FROM eclipse-temurin:17-jdk
 
 ARG JAR_FILE=build/libs/life-manager-1.0.0.jar
 
