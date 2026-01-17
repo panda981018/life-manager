@@ -15,6 +15,7 @@ jobs:
               username: ${{secrets.EC2_USERNAME}}
               key: ${{secrets.EC2_SSH_KEY}}
               script: |
+                 cd /home/ubuntu/app/life-manager
                  git pull origin main
                  chmod +x ./deploy.sh  # 실행 권한 확실히 주기
                  ./deploy.sh
