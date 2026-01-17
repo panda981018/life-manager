@@ -43,9 +43,9 @@ jobs:
          - name: Deploy to EC2
            uses: appleboy/ssh-action@v1.0.0
            with:
-              host: ${{ secrets.HOST }}
-              username: ${{ secrets.USERNAME }}
-              key: ${{ secrets.KEY }}
+              host: ${{ secrets.EC2_HOST }}
+              username: ${{ secrets.EC2_USERNAME }}
+              key: ${{ secrets.EC2_SSH_KEY }}
               script: |
                  cd /home/ubuntu/app/life-manager
                  git pull origin main
