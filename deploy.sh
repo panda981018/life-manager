@@ -24,7 +24,10 @@ docker pull $DOCKER_APP_NAME:latest
 # -d: 백그라운드 실행
 # -p 9000:9000 : 호스트 9000포트를 컨테이너 9000 포트와 연결
 echo "Running container..."
-docker run -d -p 9000:9000 --name life-manager-container $DOCKER_APP_NAME:latest
+docker run -d -p 9000:9000 \
+  --name life-manager-container \
+  -v /home/ubuntu/app/life-manager/src/main/resources/application-prod.properties:/config/application-prod.properties \
+  $DOCKER_APP_NAME:latest
 
 # (선택 사항) 사용하지 않는 불필요한 이미지 찌꺼기 정리
 docker image prune -f
