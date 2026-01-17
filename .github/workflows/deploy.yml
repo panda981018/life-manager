@@ -49,5 +49,5 @@ jobs:
               script: |
                  cd /home/ubuntu/app/life-manager
                  git pull origin main
-                 sudo chmod +x ./deploy.sh
+                 chmod +x deploy.sh
                  ./deploy.sh
