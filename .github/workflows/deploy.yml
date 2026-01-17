@@ -1,4 +1,4 @@
-name : Deploy to EC2
+name : Deploy to EC2 with Docker
 
 'on':
    push:
@@ -8,14 +8,47 @@ jobs:
    deploy:
       runs-on: ubuntu-latest
       steps:
+         - uses: actions/checkout@v3
+
+         # Java settings
+         - name: Set up JDK 17
+           uses: actions/setup-java@v3
+           with:
+              java-version: '17'
+              distribution: 'temurin'
+
+         # Gradle build (create JAR)
+         - name: Build with Gradle
+           run: |
+              cd /home/ubuntu/app/life-manager
+              chmod +x gradlew
+              ./gradlew clean build -x test
+
+         # Docker Hub 로그인
+         - name: Login to Docker Hub
+           uses: docker/login-action@v2
+           with:
+              username: ${{ secrets.DOCKER_USERNAME }}
+              password: ${{ secrets.DOCKER_PASSWORD }}
+
+
+         # Build Docker image & Push
+         - name: Build and Push Docker Image
+           uses: docker/build-push-action@v4
+           with:
+              context: .
+              push: true
+              tags: ${{ secrets.DOCKER_USERNAME }}/life-manager:latest
+
+         # Access Server & Run deploy scripts
          - name: Deploy to EC2
            uses: appleboy/ssh-action@v1.0.0
            with:
-              host: ${{secrets.EC2_HOST}}
-              username: ${{secrets.EC2_USERNAME}}
-              key: ${{secrets.EC2_SSH_KEY}}
+              host: ${{ secrets.HOST }}
+              username: ${{ secrets.USERNAME }}
+              key: ${{ secrets.KEY }}
               script: |
                  cd /home/ubuntu/app/life-manager
                  git pull origin main
-                 chmod +x ./deploy.sh  # 실행 권한 확실히 주기
+                 sudo chmod +x ./deploy.sh
                  ./deploy.sh
