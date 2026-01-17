@@ -15,5 +15,5 @@ jobs:
               username: ${{secrets.EC2_USERNAME}}
               key: ${{secrets.EC2_SSH_KEY}}
               script: |
-                 chmod +x ~/app/life-manager/deploy.sh  # 실행 권한 확실히 주기
-                 ~/app/life-manager/deploy.sh
+                 chmod +x ./deploy.sh  # 실행 권한 확실히 주기
+                 ./deploy.sh
